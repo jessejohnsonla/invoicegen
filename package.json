@@ -20,7 +20,12 @@
     "@angular/platform-browser": "~7.0.0",
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
+    "bootstrap": "^3.3.7",
     "core-js": "^2.5.4",
+    "fs": "0.0.1-security",
+    "ng2-pdf-viewer": "^5.2.0",
+    "pdfjs-dist": "^2.0.489",
+    "pdfshift": "^1.0.4",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.26"
   },

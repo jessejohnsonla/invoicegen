@@ -1,0 +1,79 @@
+<div id="invoicetemplate" 
+      style="width: 8.5in; height: 11in; padding:0px; margin:0px;">
+    <div style="height:50pt;">&nbsp;</div>
+      <table class="table borderless">
+        <tr>
+            <td style="width:.5in;" rowspan="2"></td>
+            <td style="text-align: right; font-size: 14pt;">Invoice</td>
+            <td style="width:.5in;" rowspan="2"></td></tr>
+        <tr><td><span  style="background-color: lightgrey; padding: 10px; font-size: 18pt;">J Lion Consulting INC</span></td></tr>
+        <tr><td colspan="3"><div style="height:2pt;width:100%;background-color:dimgrey;"></div></td></tr>
+      </table>
+      
+      <table class="table borderless">
+        <tr>
+          <td style="width:.5in;" rowspan="4"></td>
+          <td>Bill To:</td>
+          <td>{{ invoice?.BillToName }}</td>
+          <td style="text-align: right;">Invoice No:</td>
+          <td>{{ invoice?.ID }}</td>
+          <td style="width:.5in;" rowspan="4"></td>
+        </tr>
+        <tr>
+          <td colspan="3" style="width: 75%; text-align: right;">Date:</td>
+          <td>{{ invoice?.ServiceDate }}</td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align: right;">Terms:</td>
+          <td>{{ invoice?.Terms }}</td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align: right;">Due Date:</td>
+          <td>{{ invoice?.DueDate }}</td>
+        </tr>
+        <tr>
+          <td colspan="4">&nbsp;</td>
+        </tr>
+      </table>
+      
+      <table class="table borderless" style="">
+          <tr> 
+              <td style="width:.5in;" rowspan="1000"></td>
+            <td style="width:50%; background-color: lightblue;">Description</td>
+            <td style="background-color: lightblue; text-align: right;">Quantity</td>
+            <td style="background-color: lightblue; text-align: right;">Rate</td>
+            <td style="background-color: lightblue; text-align: right;">Amount</td>
+            <td style="width:.5in;" rowspan="1000"></td>
+          </tr> 
+
+          <tr *ngFor="let invoiceItem of invoiceItems">
+            <td>{{invoiceItem.Description}}</td>
+            <td style="text-align: right;">{{invoiceItem.Qty}}</td>
+            <td style="text-align: right;">{{invoiceItem.Rate}}</td>
+            <td style="text-align: right;">{{invoiceItem.Amount}}</td>
+          </tr>
+          <tr><td colspan="4">&nbsp;</td></tr>
+          <tr>
+            <td colspan="3" style="text-align: right;">Subtotal</td>
+            <td style="text-align: right;">{{ invoice?.subtotal }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: right;">TAX%</td>
+            <td style="text-align: right;">{{ invoice?.TaxRate }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: right;">Total</td>
+            <td style="text-align: right;">{{ invoice?.total }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: right;">PAID</td>
+            <td style="text-align: right;">{{ invoice?.AmountPaid }}</td>
+          </tr>
+          <tr>
+              <td>&nbsp;</td>
+              <td colspan="2" style="background-color: black; color: white; text-align: right;">Balance Due</td>
+              <td style="background-color: black; color: white; text-align: right;">{{ invoice?.balance }}</td>
+          </tr>
+
+        </table>
+</div>
