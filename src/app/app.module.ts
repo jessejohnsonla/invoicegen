@@ -2,25 +2,22 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
-import { EditInvoiceComponent } from './edit-invoice/edit-invoice.component';
-import { InvoiceHistoryComponent } from './invoice-history/invoice-history.component';
+import { InvoicesComponent } from './invoices/invoices.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { AddEmailsComponent } from './invoice-history/add-emails/add-emails.component';
+import { PreviewComponent } from './invoices/preview/preview.component';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
-import { ProcessComponent } from './process/process.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { ErrorPageComponent } from './error-page/error-page.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { EditComponent } from './invoices/edit/edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EditInvoiceComponent,
-    InvoiceHistoryComponent,
-    AddEmailsComponent,
-    ProcessComponent,
-    ErrorPageComponent
+    EditComponent,
+    InvoicesComponent,
+    PreviewComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,

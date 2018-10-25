@@ -1,15 +1,12 @@
-import { Data } from '@angular/router';
 import { Injectable, OnInit } from '@angular/core';
-import { InvoiceItem, Invoice } from '../models/invoice.model';
+import { InvoiceItem, Invoice } from './invoices.model';
 import {HttpClient} from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { encode } from 'punycode';
-import {map, catchError} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class InvoiceService implements OnInit {
+export class InvoicesService {
 
   baseUrl:string = 'http://localhost/';
 
@@ -48,9 +45,4 @@ export class InvoiceService implements OnInit {
       }
       return of('no pdfSrc provided!');
     }
-
-  ngOnInit()
-  {
-    //this.invoices = this.getInvoices();
-  }
 }

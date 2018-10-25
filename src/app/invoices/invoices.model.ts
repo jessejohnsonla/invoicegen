@@ -1,8 +1,6 @@
-import { OnInit } from "@angular/core";
-import { InvoiceService } from "../services/invoice.service";
 import { Observable } from "rxjs/internal/Observable";
 
-export class Invoice implements OnInit {
+export class Invoice {
     public invoiceitems: Observable<InvoiceItem[]>;
 
     constructor(public ID: number,
@@ -17,13 +15,7 @@ export class Invoice implements OnInit {
                 public AmountPaid: number,
                 public subtotal: number,
                 public total: number,
-                public balance: number,
-                private invoiceservice: InvoiceService) {}
-
-    ngOnInit()
-    {
-        //this.invoiceitems = this.invoiceservice.getInvoiceItems(this.ID);
-    }
+                public balance: number) {}
   }
   
   export class InvoiceItem {

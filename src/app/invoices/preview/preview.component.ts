@@ -1,15 +1,15 @@
-import { InvoiceService } from './../../services/invoice.service';
-import { Invoice } from './../../models/invoice.model';
+import { InvoicesService } from '../invoices.service';
+import { Invoice } from '../invoices.model';
 import { OnInit, Component, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 
 @Component({
-  selector: 'app-add-emails',
-  templateUrl: './add-emails.component.html',
-  styleUrls: ['./add-emails.component.css']
+  selector: 'app-preview',
+  templateUrl: './preview.component.html',
+  styleUrls: ['./preview.component.css']
 })
-export class AddEmailsComponent implements OnInit {
+export class PreviewComponent implements OnInit {
   id:number;
   invoice:Invoice;
   result:string;
@@ -44,7 +44,7 @@ export class AddEmailsComponent implements OnInit {
     this.page--;
   }
 
-  constructor(private invoiceService: InvoiceService,
+  constructor(private invoiceService: InvoicesService,
               private route: ActivatedRoute,
               private router: Router) { 
                 this.navigationSubscription = this.router.events.subscribe((e:any) => {

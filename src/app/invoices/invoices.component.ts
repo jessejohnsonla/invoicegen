@@ -1,23 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Invoice } from '../models/invoice.model';
-import { InvoiceService } from '../services/invoice.service';
-import { Observable } from 'rxjs/internal/Observable';
+import { Invoice } from './invoices.model';
+import { InvoicesService } from './invoices.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-invoice-history',
-  templateUrl: './invoice-history.component.html',
-  styleUrls: ['./invoice-history.component.css']
+  selector: 'app-invoices',
+  templateUrl: './invoices.component.html',
+  styleUrls: ['./invoices.component.css']
 })
-export class InvoiceHistoryComponent implements OnInit {
-  init(): any {
-    //throw new Error("Method not implemented.");
-  }
+export class InvoicesComponent implements OnInit {
 
   invoices: Invoice[];
   navigationSubscription;
 
-  constructor(private invoiceService: InvoiceService,
+  constructor(private invoiceService: InvoicesService,
               private router: Router) { 
               }
 
@@ -26,7 +22,7 @@ export class InvoiceHistoryComponent implements OnInit {
   }
   
   sendClick(id:number) {
-    this.router.navigate(['invoice-history','add-emails', id],
+    this.router.navigate(['invoices','preview', id],
     {skipLocationChange: true});
   }
   editClick(id:number) {
