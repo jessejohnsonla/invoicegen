@@ -1,6 +1,6 @@
 import { InvoiceService } from './../../services/invoice.service';
 import { Invoice } from './../../models/invoice.model';
-import { OnInit, Component } from '@angular/core';
+import { OnInit, Component, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 
@@ -14,15 +14,26 @@ export class AddEmailsComponent implements OnInit {
   invoice:Invoice;
   result:string;
   pdfSrc:string;
+  emails:string;
   navigationSubscription;
 
   page: number = 1;
   totalPages: number;
   isLoaded: boolean = false;
+  pdfviewerDisplay: string  = 'none';
+  loadingDisplay: string  = 'table';
+  sendDisplay: string  = 'none';
+
+  toggleLoading(loading:boolean) {
+    this.loadingDisplay = loading ? 'table' : 'none';
+    this.sendDisplay = loading ? 'none' : 'table';
+    this.pdfviewerDisplay = loading ? 'none' : 'block';
+  }
 
   afterLoadComplete(pdfData: any) {
     this.totalPages = pdfData.numPages;
     this.isLoaded = true;
+    this.toggleLoading(false);
   }
 
   nextPage() {
@@ -43,9 +54,10 @@ export class AddEmailsComponent implements OnInit {
                 })}
   
 
-  handlePdf(invoiceid: number, emails: string)
+  previewPdf(invoiceid: number)
   {
-    var inv = this.invoiceService.handleProcessing(invoiceid, emails);
+    this.toggleLoading(true);
+    var inv = this.invoiceService.handleProcessing(invoiceid);
     inv.subscribe(pdfurl => {
       this.pdfSrc = null;
       this.pdfSrc = pdfurl;    
@@ -54,12 +66,14 @@ export class AddEmailsComponent implements OnInit {
   }
 
   init(){
+    this.toggleLoading(true);
+
     this.id = this.route.snapshot.params['id'];
     this.route.params.subscribe((params) => { this.id = params['id']});
       
     this.invoiceService.getInvoice(this.id).subscribe(data => this.invoice = data);
-
-    this.handlePdf(this.id, "");
+    this.emails = "3106213801@mms.att.net";
+    this.previewPdf(this.id);
   }
   ngOnInit() {
   }
@@ -71,9 +85,18 @@ export class AddEmailsComponent implements OnInit {
        this.navigationSubscription.unsubscribe();
     }
   }
-  onGoClick(invoiceid:number, emails:string)
+  onSendClick()
   {
-    this.handlePdf(invoiceid, emails);
+    this.toggleLoading(true);
+    var pdfsrc = this.pdfSrc.replace('http://localhost/', '');
+    this.sendPDF(pdfsrc, this.emails);
+  }
+  sendPDF(pdfSrc: string, emails: string) {
+    var result = this.invoiceService.sendPDF(pdfSrc, emails);
+    result.subscribe( msg => {
+        this.toggleLoading(false);
+        alert(msg);
+    });
   }
 
 }

@@ -2,7 +2,7 @@ import { Data } from '@angular/router';
 import { Injectable, OnInit } from '@angular/core';
 import { InvoiceItem, Invoice } from '../models/invoice.model';
 import {HttpClient} from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { encode } from 'punycode';
 import {map, catchError} from 'rxjs/operators';
 
@@ -10,7 +10,10 @@ import {map, catchError} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class InvoiceService implements OnInit {
-  baseUrl:string = 'http://192.168.1.95/';
+
+  baseUrl:string = 'http://localhost/';
+
+  constructor(private httpClient: HttpClient) { }
 
   getInvoice(invoiceid: number): Observable<Invoice> {
     return this.httpClient.get<Invoice>(this.baseUrl + 'invoice/' + invoiceid);
@@ -26,14 +29,25 @@ export class InvoiceService implements OnInit {
     
     }
 
-    handleProcessing(invoiceid: number, emails: string) : Observable<string> {
+    handleProcessing(invoiceid: number) : Observable<string> {
       var url = this.baseUrl + 'process/' + invoiceid;
-      if(emails != null && emails.length > 0 && emails.indexOf('@')>=0)
-        url += '/' + encode(emails);
       return this.httpClient.get<string>(url);
     }
 
-  constructor(private httpClient: HttpClient) { }
+    sendPDF(pdfSrc: string, emails: string): Observable<string> {     
+      var url = this.baseUrl + 'sendpdf?';
+      if(pdfSrc != null && pdfSrc.length > 0 && pdfSrc.indexOf('.pdf')>=0)
+      {
+        url += 'p=' + encodeURIComponent(pdfSrc) + '&';
+        if(emails != null && emails.length > 0 && emails.indexOf('@')>=0)
+        {
+          url += 'e=' + encodeURIComponent(emails);
+          return this.httpClient.get<string>(url);
+        }
+        return of('no email(s) provided!');
+      }
+      return of('no pdfSrc provided!');
+    }
 
   ngOnInit()
   {

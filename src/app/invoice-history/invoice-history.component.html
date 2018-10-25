@@ -1,4 +1,4 @@
-<table class="table table-striped table-bordered table-hover small">
+<table style="padding: 0px; margin:0px;" class="table table-striped table-bordered table-hover small">
   <thead>
     <tr>
       <th>Bill To:</th>
@@ -10,12 +10,12 @@
           <td>{{ invoice.BillToName }}</td>
           <td>{{ invoice.ServiceDate }}</td>
           <td><button  type="button" 
-                      class="btn btn-primary btn-xs glyphicon glyphicon-envelope" 
+                      class="btn btn-primary btn-xs glyphicon glyphicon-download-alt" 
                       value="Send"
                       (click)="sendClick(invoice.ID)">
                     </button></td>
           <td><button  type="button" 
-                      class="btn btn-primary btn-xs glyphicon glyphicon-pencil" 
+                      class="btn btn-info btn-xs glyphicon glyphicon-pencil" 
                       value="Edit"
                       (click)="editClick(invoice.ID)">
                     </button></td>
@@ -26,5 +26,4 @@
                     </button></td>
       </tr>
     </tbody>
-</table>
-<router-outlet></router-outlet>
+</table><router-outlet></router-outlet>

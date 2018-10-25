@@ -26,7 +26,7 @@ export class InvoiceHistoryComponent implements OnInit {
   }
   
   sendClick(id:number) {
-    this.router.navigate(['invoice','emails', id],
+    this.router.navigate(['invoice-history','add-emails', id],
     {skipLocationChange: true});
   }
   editClick(id:number) {
