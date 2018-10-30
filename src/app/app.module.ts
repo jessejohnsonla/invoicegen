@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { EditComponent } from './invoices/edit/edit.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { EditComponent } from './invoices/edit/edit.component';
     RouterModule,
     PdfViewerModule,
     FormsModule,
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
+    ReactiveFormsModule
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]

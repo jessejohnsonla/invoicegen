@@ -1,28 +1,31 @@
 import { Observable } from "rxjs/internal/Observable";
 
 export class Invoice {
-    public invoiceitems: Observable<InvoiceItem[]>;
+    public invoiceitems: InvoiceItem[];
+    public ID: number;
+                public BillToName: string;
+                public BillToAddress: string;
+                public BillToAddress2: string; 
+                public BillToCity: string;
+                public BillToState: string;
+                public Terms: string;
+                public DueDate: Date; 
+                public TaxRate: number;
+                public AmountPaid: number;
+                public Subtotal: number;
+                public Total: number;
+                public Balance: number;
 
-    constructor(public ID: number,
-                public BillToName: string, 
-                public BillToAddress: string, 
-                public BillToAddress2: string, 
-                public BillToCity: string, 
-                public BillToState: string, 
-                public Terms: string, 
-                public DueDate: Date, 
-                public TaxRate: number, 
-                public AmountPaid: number,
-                public subtotal: number,
-                public total: number,
-                public balance: number) {}
+    constructor() {}
   }
   
   export class InvoiceItem {
-      constructor(public ID: number,
-                public Description: string,
-                public Qty:number,
-                public Rate:number,
-                public Amount:number) {}
+    public ID: number;
+    public Description: string;
+    public Qty:number;
+    public Rate:number;
+    public Amount:number;
+
+    constructor() {}
     
   }

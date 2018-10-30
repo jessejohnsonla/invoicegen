@@ -26,7 +26,7 @@ export class InvoicesComponent implements OnInit {
     {skipLocationChange: true});
   }
   editClick(id:number) {
-    this.router.navigate(['invoice','edit', id],
+    this.router.navigate(['invoices','edit', id],
     {skipLocationChange: true});
   }
   deleteClick(id:number) {

@@ -1,3 +1,114 @@
-<p>
-  edit works!
-</p>
+<form #editinvoiceform="ngForm">
+  <nav class="navbar navbar-default" style="margin: 0px; padding-right:10pt;">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <span class="navbar-brand">{{ mode }} Invoice</span>
+        <button #savebutton (click)="onSaveClick($event)" 
+                id="savebutton"
+                name="savebutton"
+                type="button" 
+                [disabled]="!this.isdirty" 
+                class="btn btn-default btn-xs navbar-btn pull-right">SAVE</button>
+      </div>
+    </div>
+  </nav>  
+    
+ 
+ <div class="panel panel-default" style="margin: 0px; padding:0px;">
+    <div class="panel-body">
+   
+            <div class="form-group">
+              <label class="sr-only" for="BillToName">Bill To:</label>
+              <div class="input-group input-group-sm">
+                <div class="input-group-addon">Bill To:</div>
+                <input type="text" 
+                        class="form-control" 
+                        id="BillToName"
+                        name="BillToName"
+                        [(ngModel)]="this.invoice.BillToName"
+                        placeholder="">
+              </div>
+            </div>
+            <span class="text-xs"><a (click)="onToggleAddressClick()">{{toggle}} address</a></span>
+            <div class="container" style="border:0px;padding:0px;" [ngStyle]="{'display': addressDisplay}">
+              <div class="form-group">
+                <label class="sr-only" for="BillToAddress1">Address:</label>
+                <div class="input-group input-group-sm">
+                  <div class="input-group-addon">Address:</div>
+                  <input type="text" class="form-control" id="BillToAddress1" placeholder="">
+                </div>
+              </div>
+            
+              <div class="form-group">
+                <label class="sr-only" for="BillToAddress2">Address 2:</label>
+                <div class="input-group input-group-sm">
+                  <div class="input-group-addon">Address 2:</div>
+                  <input type="text" class="form-control" id="BillToAddress2" placeholder="">
+                </div>
+              </div>
+            
+              <div class="form-group">
+                <label class="sr-only" for="BillToCity">City</label>
+                <div class="input-group input-group-sm">
+                  <div class="input-group-addon">City:</div>
+                  <input type="text" class="form-control" id="BillToCity" placeholder="">
+                </div>
+              </div>
+            
+              <div class="form-group">
+                <label class="sr-only" for="BillToState">State:</label>
+                <div class="input-group input-group-sm">
+                  <div class="input-group-addon">State:</div>
+                  <select type="select" class="form-control" id="BillToState" placeholder="">
+                    <option value="CA" selected>CA</option>
+                  </select>
+                </div>
+              </div>
+            
+              <div class="form-group">
+                <label class="sr-only" for="BillToZip">Zipcode:</label>
+                <div class="input-group input-group-sm">
+                  <div class="input-group-addon">Zipcode:</div>
+                  <input type="zipcode" class="form-control" id="BillToZip" placeholder="">
+                </div>
+              </div>
+            
+            </div>
+            
+            
+            <div class="form-group">
+                <label class="sr-only" for="ServiceDate">Service Date:</label>
+                <div class="input-group input-group-sm">
+                  <div class="input-group-addon">Service Date:</div>
+                  <input type="date" class="form-control" id="ServiceDate" placeholder="">
+                </div>
+              </div>
+            
+            <div class="form-group">
+                <label class="sr-only" for="Terms">Terms:</label>
+                <div class="input-group input-group-sm">
+                  <div class="input-group-addon">Terms:</div>
+                  <select type="text" class="form-control" id="Terms" placeholder="">
+                    <option value = "NET30" selected>NET30</option>
+                    <option value = "NET15">NET15</option>
+                  </select>
+                </div>
+              </div>
+            
+            <div class="form-group">
+                <label class="sr-only" for="TaxRate">Tax Rate (%):</label>
+                <div class="input-group input-group-sm">
+                  <div class="input-group-addon">Tax Rate (%):</div>
+                  <input type="number" value="0" class="form-control" id="TaxRate" placeholder="">
+                </div>
+              </div>
+            
+              <div class="input-group  input-group-sm">
+                  <span class="input-group-addon">Amount Paid:</span>
+                  <input type="number"  value="0" name="AmountPaid" class="form-control" aria-label="Amount Paid: (to the nearest dollar)">
+                  <span class="input-group-addon input-group-addon-xs">.00</span>
+                </div>
+                                    
+    </div>
+  </div>
+</form>

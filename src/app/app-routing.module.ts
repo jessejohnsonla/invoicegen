@@ -14,7 +14,7 @@ const appRoutes:Routes = [
         { path: 'preview/:id', component: PreviewComponent,
         runGuardsAndResolvers: 'always' }
     ]},
-    { path: 'invoice/edit/:id', component: EditComponent,
+    { path: 'invoices/edit/:id', component: EditComponent,
     runGuardsAndResolvers: 'always'  },
   ]
   

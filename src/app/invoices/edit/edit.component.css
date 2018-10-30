@@ -1,0 +1,12 @@
+
+.input-group {
+    width: 100%;
+}
+.input-group-addon {
+    min-width:100px;
+    text-align:left;
+}
+.input-group-addon-xs {
+    min-width:20px;
+    text-align:center;
+}
