@@ -25,17 +25,23 @@
                         class="form-control" 
                         id="BillToName"
                         name="BillToName"
-                        [(ngModel)]="this.invoice.BillToName"
+                        [ngModel]="this.invoice?.BillToName"
                         placeholder="">
               </div>
             </div>
-            <span class="text-xs"><a (click)="onToggleAddressClick()">{{toggle}} address</a></span>
+
+            <div class="text-right" style="border:0px;padding:0px;"><a class="small" (click)="onToggleAddressClick()">{{toggle}} address <span class="caret"></span></a></div>
+            
             <div class="container" style="border:0px;padding:0px;" [ngStyle]="{'display': addressDisplay}">
               <div class="form-group">
                 <label class="sr-only" for="BillToAddress1">Address:</label>
                 <div class="input-group input-group-sm">
                   <div class="input-group-addon">Address:</div>
-                  <input type="text" class="form-control" id="BillToAddress1" placeholder="">
+                  <input type="text" class="form-control" 
+                  id="BillToAddress1"
+                  name="BillToAddress1"
+                  [ngModel]="this.invoice?.BillToAddress1" 
+                  placeholder="">
                 </div>
               </div>
             
@@ -43,7 +49,10 @@
                 <label class="sr-only" for="BillToAddress2">Address 2:</label>
                 <div class="input-group input-group-sm">
                   <div class="input-group-addon">Address 2:</div>
-                  <input type="text" class="form-control" id="BillToAddress2" placeholder="">
+                  <input type="text" class="form-control" 
+                  id="BillToAddress2"
+                  name="BillToAddress2"
+                  [ngModel]="this.invoice?.BillToAddress2"  placeholder="">
                 </div>
               </div>
             
@@ -51,7 +60,11 @@
                 <label class="sr-only" for="BillToCity">City</label>
                 <div class="input-group input-group-sm">
                   <div class="input-group-addon">City:</div>
-                  <input type="text" class="form-control" id="BillToCity" placeholder="">
+                  <input type="text" class="form-control" 
+                  id="BillToCity"
+                  name="BillToCity"
+                  [ngModel]="this.invoice?.BillToCity" 
+                   placeholder="">
                 </div>
               </div>
             
@@ -59,7 +72,11 @@
                 <label class="sr-only" for="BillToState">State:</label>
                 <div class="input-group input-group-sm">
                   <div class="input-group-addon">State:</div>
-                  <select type="select" class="form-control" id="BillToState" placeholder="">
+                  <select type="select" class="form-control" 
+                  id="BillToState"
+                  name="BillToState"
+                  [ngModel]="this.invoice?.BillToState" 
+                  placeholder="">
                     <option value="CA" selected>CA</option>
                   </select>
                 </div>
@@ -69,7 +86,11 @@
                 <label class="sr-only" for="BillToZip">Zipcode:</label>
                 <div class="input-group input-group-sm">
                   <div class="input-group-addon">Zipcode:</div>
-                  <input type="zipcode" class="form-control" id="BillToZip" placeholder="">
+                  <input type="zipcode" class="form-control" 
+                  id="BillToZip" 
+                  name="BillToZip"
+                  [ngModel]="this.invoice?.BillToZip" 
+                  placeholder="">
                 </div>
               </div>
             
@@ -80,7 +101,11 @@
                 <label class="sr-only" for="ServiceDate">Service Date:</label>
                 <div class="input-group input-group-sm">
                   <div class="input-group-addon">Service Date:</div>
-                  <input type="date" class="form-control" id="ServiceDate" placeholder="">
+                  <input type="date" class="form-control" 
+                  id="ServiceDate"
+                  name="ServiceDate"
+                  [ngModel]="this.invoice?.ServiceDate" 
+                   placeholder="">
                 </div>
               </div>
             
@@ -88,7 +113,11 @@
                 <label class="sr-only" for="Terms">Terms:</label>
                 <div class="input-group input-group-sm">
                   <div class="input-group-addon">Terms:</div>
-                  <select type="text" class="form-control" id="Terms" placeholder="">
+                  <select type="text" class="form-control" 
+                  id="Terms"
+                  name="Terms"
+                  [ngModel]="this.invoice?.Terms" 
+                   placeholder="">
                     <option value = "NET30" selected>NET30</option>
                     <option value = "NET15">NET15</option>
                   </select>
@@ -99,13 +128,21 @@
                 <label class="sr-only" for="TaxRate">Tax Rate (%):</label>
                 <div class="input-group input-group-sm">
                   <div class="input-group-addon">Tax Rate (%):</div>
-                  <input type="number" value="0" class="form-control" id="TaxRate" placeholder="">
+                  <input type="number" value="0" class="form-control" 
+                  id="TaxRate" 
+                  name="TaxRate"
+                  [ngModel]="this.invoice?.TaxRate" 
+                  placeholder="">
                 </div>
               </div>
             
               <div class="input-group  input-group-sm">
                   <span class="input-group-addon">Amount Paid:</span>
-                  <input type="number"  value="0" name="AmountPaid" class="form-control" aria-label="Amount Paid: (to the nearest dollar)">
+                  <input type="number"  value="0"
+                   id="AmountPaid" 
+                   name="AmountPaid"
+                   [ngModel]="this.invoice?.AmountPaid" 
+                   class="form-control" aria-label="Amount Paid: (to the nearest dollar)">
                   <span class="input-group-addon input-group-addon-xs">.00</span>
                 </div>
                                     
