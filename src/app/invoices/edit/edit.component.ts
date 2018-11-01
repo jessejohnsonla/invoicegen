@@ -5,7 +5,7 @@ import {deserialize, serialize, IGenericObject} from 'json-typescript-mapper';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { InvoicesService } from '../invoices.service';
-import * as myutils from 'src/myutils';
+import * as myutils from 'src/assets/myutils';
 
 @Component({
   selector: 'app-edit',
