@@ -28,27 +28,39 @@ export class InvoicesService implements OnDestroy {
         this.postsubscription.unsubscribe();
   }
 
-  createInvoice(invoice: Invoice): Observable<{success:boolean, errormsg: string}> {
+  createInvoiceItem(item: InvoiceItem) {
+
+    var post = this.httpClient.post<InvoiceItem>(this.baseUrl + 'invoiceitem/', item);
+    var created:InvoiceItem;
+
+    this.postsubscription = post.subscribe(item => {
+      created = item;
+      return new Observable<{success: true, errormsg: null}>();
+    },
+    error => { return new Observable<{success: false, errormsg: null}>(error) });
+    return post;
+  }
+  createInvoice(invoice: Invoice) {
 
     var post = this.httpClient.post<Invoice>(this.baseUrl + 'invoice/', invoice);
     var created:Invoice;
 
     this.postsubscription = post.subscribe(invoice => {
-      created = invoice
+      created = invoice;
+      return new Observable<{success: true, errormsg: null}>();
     },
-    error => { return new Observable<{success: false, errormsg: null}>() });
-    return new Observable<{success: true, errormsg: null}>();
+    error => { return new Observable<{success: false, errormsg: null}>(error) });
+    return post;
   }
 
-  updateInvoice(invoice: Invoice): Observable<{success:boolean, errormsg: string}>  {
-    var updated:Invoice;
-
-    var put = this.httpClient.post<Invoice>(this.baseUrl + 'invoice/', invoice, httpOptions);
-    this.putsubscription = put.subscribe(invoice => {
-      updated = invoice
+  updateInvoice(invoice: Invoice)  {
+    var put = this.httpClient.put<boolean>(this.baseUrl + 'invoice/', invoice, httpOptions);
+    this.putsubscription = put.subscribe(result => {
+      console.log(result + '$$');
+      return new Observable<{success: true, errormsg: null}>();
     },
-    error => { return new Observable<{success: false, errormsg: null}>() });
-    return new Observable<{success: true, errormsg: null}>();
+    error => { return new Observable<{success: false, errormsg:  null}>() });
+    return put;
   }
 
   getInvoice(invoiceid: number): Observable<Invoice> {

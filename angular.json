@@ -27,6 +27,7 @@
               "./node_modules/font-awesome/css/font-awesome.css"
             ],
             "scripts": [
+              "src/myutils.js"
             ]
           },
           "configurations": {

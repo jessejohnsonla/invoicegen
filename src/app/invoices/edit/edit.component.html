@@ -8,7 +8,7 @@
                 name="savebutton"
                 type="button" 
                 [disabled]="!this.isdirty" 
-                class="btn btn-default btn-xs navbar-btn pull-right">SAVE</button>
+                class="btn btn-primary btn-xs navbar-btn pull-right">SAVE</button>
       </div>
     </div>
   </nav>  
@@ -25,7 +25,7 @@
                         class="form-control" 
                         id="BillToName"
                         name="BillToName"
-                        [ngModel]="this.invoice?.BillToName"
+                        [(ngModel)]="this.invoice.BillToName"
                         placeholder="">
               </div>
             </div>
@@ -40,7 +40,7 @@
                   <input type="text" class="form-control" 
                   id="BillToAddress1"
                   name="BillToAddress1"
-                  [ngModel]="this.invoice?.BillToAddress1" 
+                  [(ngModel)]="this.invoice.BillToAddress1" 
                   placeholder="">
                 </div>
               </div>
@@ -52,7 +52,7 @@
                   <input type="text" class="form-control" 
                   id="BillToAddress2"
                   name="BillToAddress2"
-                  [ngModel]="this.invoice?.BillToAddress2"  placeholder="">
+                  [(ngModel)]="this.invoice.BillToAddress2"  placeholder="">
                 </div>
               </div>
             
@@ -63,7 +63,7 @@
                   <input type="text" class="form-control" 
                   id="BillToCity"
                   name="BillToCity"
-                  [ngModel]="this.invoice?.BillToCity" 
+                  [(ngModel)]="this.invoice.BillToCity" 
                    placeholder="">
                 </div>
               </div>
@@ -75,7 +75,7 @@
                   <select type="select" class="form-control" 
                   id="BillToState"
                   name="BillToState"
-                  [ngModel]="this.invoice?.BillToState" 
+                  [(ngModel)]="this.invoice.BillToState" 
                   placeholder="">
                     <option value="CA" selected>CA</option>
                   </select>
@@ -83,13 +83,13 @@
               </div>
             
               <div class="form-group">
-                <label class="sr-only" for="BillToZip">Zipcode:</label>
+                <label class="sr-only" for="BillToZipcode">Zipcode:</label>
                 <div class="input-group input-group-sm">
                   <div class="input-group-addon">Zipcode:</div>
                   <input type="zipcode" class="form-control" 
-                  id="BillToZip" 
-                  name="BillToZip"
-                  [ngModel]="this.invoice?.BillToZip" 
+                  id="BillToZipcode" 
+                  name="BillToZipcode"
+                  [(ngModel)]="this.invoice.BillToZipcode" 
                   placeholder="">
                 </div>
               </div>
@@ -104,10 +104,21 @@
                   <input type="date" class="form-control" 
                   id="ServiceDate"
                   name="ServiceDate"
-                  [ngModel]="this.invoice?.ServiceDate" 
+                  [(ngModel)]="this.invoice.ServiceDate" 
                    placeholder="">
                 </div>
               </div>
+              <div class="form-group">
+                  <label class="sr-only" for="DueDate">Due Date:</label>
+                  <div class="input-group input-group-sm">
+                    <div class="input-group-addon">Due Date:</div>
+                    <input type="date" class="form-control" 
+                    id="DueDate"
+                    name="DueDate"
+                    [(ngModel)]="this.invoice.DueDate" 
+                     placeholder="">
+                  </div>
+                </div>
             
             <div class="form-group">
                 <label class="sr-only" for="Terms">Terms:</label>
@@ -116,7 +127,8 @@
                   <select type="text" class="form-control" 
                   id="Terms"
                   name="Terms"
-                  [ngModel]="this.invoice?.Terms" 
+                  [(ngModel)]="this.invoice.Terms" 
+                  (change)="onSelectChange($event)"
                    placeholder="">
                     <option value = "NET30" selected>NET30</option>
                     <option value = "NET15">NET15</option>
@@ -131,7 +143,7 @@
                   <input type="number" value="0" class="form-control" 
                   id="TaxRate" 
                   name="TaxRate"
-                  [ngModel]="this.invoice?.TaxRate" 
+                  [(ngModel)]="this.invoice.TaxRate" 
                   placeholder="">
                 </div>
               </div>
@@ -141,7 +153,7 @@
                   <input type="number"  value="0"
                    id="AmountPaid" 
                    name="AmountPaid"
-                   [ngModel]="this.invoice?.AmountPaid" 
+                   [(ngModel)]="this.invoice.AmountPaid" 
                    class="form-control" aria-label="Amount Paid: (to the nearest dollar)">
                   <span class="input-group-addon input-group-addon-xs">.00</span>
                 </div>

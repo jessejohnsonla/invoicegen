@@ -11,6 +11,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { EditComponent } from './invoices/edit/edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { EditItemComponent } from './invoices/edit-item/edit-item.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     EditComponent,
     InvoicesComponent,
     PreviewComponent,
-    EditComponent
+    EditComponent,
+    EditItemComponent
   ],
   imports: [
     BrowserModule,

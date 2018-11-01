@@ -4,6 +4,7 @@ import { NgModule } from "@angular/core";
 import { InvoicesComponent } from './invoices/invoices.component';
 import { EditComponent } from './invoices/edit/edit.component';
 import { PreviewComponent } from "./invoices/preview/preview.component";
+import { EditItemComponent } from './invoices/edit-item/edit-item.component';
 
 const appRoutes:Routes = [
     { path: '', redirectTo: 'invoices', pathMatch: 'full',
@@ -15,6 +16,8 @@ const appRoutes:Routes = [
         runGuardsAndResolvers: 'always' }
     ]},
     { path: 'invoices/edit/:id', component: EditComponent,
+    runGuardsAndResolvers: 'always'  },
+    { path: 'invoices/edit-item/:id', component: EditItemComponent,
     runGuardsAndResolvers: 'always'  },
   ]
   

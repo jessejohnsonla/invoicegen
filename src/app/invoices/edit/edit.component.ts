@@ -5,6 +5,7 @@ import {deserialize, serialize, IGenericObject} from 'json-typescript-mapper';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { InvoicesService } from '../invoices.service';
+import * as myutils from 'src/myutils';
 
 @Component({
   selector: 'app-edit',
@@ -18,7 +19,7 @@ export class EditComponent implements OnInit, OnDestroy {
   toggle:string = 'show';
   addressDisplay:string = 'none';
   isdirty:boolean = false;
-  invoice:Invoice;
+  invoice:Invoice = new Invoice();
   @ViewChild('editinvoiceform') editinvoiceform;
   @ViewChild('savebutton') savebutton : ElementRef;
   subscriptions: Subscription[] = [];
@@ -52,10 +53,10 @@ export class EditComponent implements OnInit, OnDestroy {
     // this.invoice.BillToName = 'bill-to-name';
     // $json = serialize(this.invoice);
 
-    var sub:Subscription = this.editinvoiceform.valueChanges
+    sub = this.editinvoiceform.valueChanges
         .subscribe(status => {
           this.isdirty = this.editinvoiceform.dirty;
-          this.setSaveDisableStatus(this.savebutton.nativeElement);
+          myutils.setSaveDisableStatus(this.savebutton.nativeElement, this.isdirty);
         });
     this.subscriptions.push(sub);
   }
@@ -69,29 +70,34 @@ export class EditComponent implements OnInit, OnDestroy {
   {
     var sub:Subscription;
     if(this.mode === 'Edit') {
-      sub = this.invoicesservice.updateInvoice(this.invoice).subscribe(invoice => {
+      var result = this.invoicesservice.updateInvoice(this.invoice);
+      if(!result)
+      {
+        console.log('not updated:');
+        return;
+      }
+      sub = result.subscribe(invoice => {
         this.isdirty = false;
       });
+      this.subscriptions.push(sub);
     }
     else {
-      sub = this.invoicesservice.createInvoice(this.invoice).subscribe(invoice => {
-        if(invoice.success)
-          this.isdirty = false;
-          else{
-            alert(invoice.errormsg + '!!!');
-          }
+      var result2 = this.invoicesservice.createInvoice(this.invoice);
+      if(!result2)
+      {
+        console.log('not created:');
+        return;
+      }
+      sub = result2.subscribe(invoice => {
+        this.isdirty = false;
+        this.invoice = invoice;
       });
+      this.subscriptions.push(sub);
     }
-    this.subscriptions.push(sub);
-    this.setSaveDisableStatus(elementRef.srcElement);
+    document.body.click();
   }
 
-  setSaveDisableStatus(elref){
-    if(this.isdirty) {
-      elref.className = elref.className.replace('btn-default','btn-primary');
-      return 'enabled';
-    }
-    elref.className = elref.className.replace('btn-primary','btn-default');
-    return 'enabled';
-  }    
+  onSelectChange($event){
+    this.invoice.Terms = $event.target.value;
+  }
 }
