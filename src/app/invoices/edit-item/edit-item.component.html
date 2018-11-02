@@ -1,8 +1,8 @@
-<form #editinvoiceitemform="ngForm">
+<form #edititemform="ngForm">
   <nav class="navbar navbar-default" style="margin: 0px; padding-right:10pt;">
     <div class="container-fluid">
       <div class="navbar-header">
-        <span class="navbar-brand">Add Item to Invoice</span>
+        <span class="navbar-brand">{{titlefragment}} Invoice</span>
         <button #savebutton (click)="onSaveClick($event)" 
                 id="savebutton"
                 name="savebutton"
@@ -12,8 +12,7 @@
       </div>
     </div>
   </nav>
-    
- 
+     
  <div class="panel panel-default" style="margin: 0px; padding:0px;">
     <div class="panel-body">
             <div class="form-group">
@@ -31,7 +30,7 @@
                   <label class="sr-only" for="Description">Date:</label>
                   <div class="input-group input-group-sm">
                     <div class="input-group-addon">Date:</div>
-                    <input type="text" class="form-control" 
+                    <input type="date" class="form-control" 
                     id="Date"
                     name="Date"
                     [(ngModel)]="this.invoiceitem.Date" 

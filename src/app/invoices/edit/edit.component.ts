@@ -1,11 +1,9 @@
 import { Invoice } from './../invoices.model';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild, ElementRef, Attribute, OnDestroy } from '@angular/core';
-import {deserialize, serialize, IGenericObject} from 'json-typescript-mapper';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import {IGenericObject} from 'json-typescript-mapper';
 import { Subscription } from 'rxjs';
 import { InvoicesService } from '../invoices.service';
-import * as myutils from 'src/assets/myutils';
 
 @Component({
   selector: 'app-edit',
@@ -48,15 +46,9 @@ export class EditComponent implements OnInit, OnDestroy {
       this.invoice = invoice;
     })
 
-    //var invoice = deserialize(Invoice, $json);
-    // this.invoice = new Invoice();
-    // this.invoice.BillToName = 'bill-to-name';
-    // $json = serialize(this.invoice);
-
     sub = this.editinvoiceform.valueChanges
         .subscribe(status => {
           this.isdirty = this.editinvoiceform.dirty;
-          myutils.setSaveDisableStatus(this.savebutton.nativeElement, this.isdirty);
         });
     this.subscriptions.push(sub);
   }
@@ -68,33 +60,33 @@ export class EditComponent implements OnInit, OnDestroy {
 
   onSaveClick(elementRef)
   {
-    var sub:Subscription;
+    var subscription:Subscription;
+    var result:any;
     if(this.mode === 'Edit') {
-      var result = this.invoicesservice.updateInvoice(this.invoice);
+      result = this.invoicesservice.updateInvoice(this.invoice);
       if(!result)
       {
         console.log('not updated:');
         return;
       }
-      sub = result.subscribe(invoice => {
+      subscription = result.subscribe(invoice => {
         this.isdirty = false;
       });
-      this.subscriptions.push(sub);
+      this.subscriptions.push(subscription);
     }
     else {
-      var result2 = this.invoicesservice.createInvoice(this.invoice);
-      if(!result2)
+      result = this.invoicesservice.createInvoice(this.invoice);
+      if(!result)
       {
         console.log('not created:');
         return;
       }
-      sub = result2.subscribe(invoice => {
+      subscription = result.subscribe(invoice => {
         this.isdirty = false;
         this.invoice = invoice;
       });
-      this.subscriptions.push(sub);
+      this.subscriptions.push(subscription);
     }
-    document.body.click();
   }
 
   onSelectChange($event){

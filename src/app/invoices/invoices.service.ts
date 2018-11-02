@@ -30,27 +30,24 @@ export class InvoicesService implements OnDestroy {
 
   createInvoiceItem(item: InvoiceItem) {
 
-    var post = this.httpClient.post<InvoiceItem>(this.baseUrl + 'invoiceitem/', item);
-    var created:InvoiceItem;
+    var post = this.httpClient.post<InvoiceItem>(this.baseUrl + 'invoiceitems/' + item.InvoiceID, item);
 
-    this.postsubscription = post.subscribe(item => {
-      created = item;
-      return new Observable<{success: true, errormsg: null}>();
-    },
-    error => { return new Observable<{success: false, errormsg: null}>(error) });
+    // this.postsubscription = post.subscribe(result => {
+    //   item = result;
+    // },
+    // error => { return null; });
     return post;
   }
+
   createInvoice(invoice: Invoice) {
 
     var post = this.httpClient.post<Invoice>(this.baseUrl + 'invoice/', invoice);
-    var created:Invoice;
 
-    this.postsubscription = post.subscribe(invoice => {
-      created = invoice;
-      return new Observable<{success: true, errormsg: null}>();
+    this.postsubscription = post.subscribe(result => {
+      invoice = result;
     },
-    error => { return new Observable<{success: false, errormsg: null}>(error) });
-    return post;
+    error => { return null; });
+    return invoice;
   }
 
   updateInvoice(invoice: Invoice)  {
