@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
@@ -12,6 +12,9 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { EditComponent } from './invoices/edit/edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditItemComponent } from './invoices/edit-item/edit-item.component';
+import { InvoiceItemsComponent } from './invoices/items/items.component';
+import { AlertModule } from 'ngx-bootstrap';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,8 @@ import { EditItemComponent } from './invoices/edit-item/edit-item.component';
     InvoicesComponent,
     PreviewComponent,
     EditComponent,
-    EditItemComponent
+    EditItemComponent,
+    InvoiceItemsComponent
   ],
   imports: [
     BrowserModule,
@@ -30,9 +34,11 @@ import { EditItemComponent } from './invoices/edit-item/edit-item.component';
     PdfViewerModule,
     FormsModule,
     AngularFontAwesomeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ModalModule.forRoot(),
+    [AlertModule.forRoot()]
   ],
-  providers: [HttpClient],
+  providers: [HttpClient, Title],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

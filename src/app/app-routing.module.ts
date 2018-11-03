@@ -5,6 +5,7 @@ import { InvoicesComponent } from './invoices/invoices.component';
 import { EditComponent } from './invoices/edit/edit.component';
 import { PreviewComponent } from "./invoices/preview/preview.component";
 import { EditItemComponent } from './invoices/edit-item/edit-item.component';
+import { InvoiceItemsComponent } from './invoices/items/items.component';
 
 const appRoutes:Routes = [
     { path: '', redirectTo: 'invoices', pathMatch: 'full',
@@ -18,6 +19,8 @@ const appRoutes:Routes = [
     { path: 'invoices/edit/:id', component: EditComponent,
     runGuardsAndResolvers: 'always'  },
     { path: 'invoices/edit-item/:id', component: EditItemComponent,
+    runGuardsAndResolvers: 'always'  },
+    { path: 'invoices/items/:invoiceid', component: InvoiceItemsComponent,
     runGuardsAndResolvers: 'always'  },
   ]
   

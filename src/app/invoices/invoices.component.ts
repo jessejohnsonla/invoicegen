@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Invoice } from './invoices.model';
 import { InvoicesService } from './invoices.service';
 import { Router } from '@angular/router';
+import { Title }     from '@angular/platform-browser';
 
 @Component({
   selector: 'app-invoices',
@@ -14,7 +15,9 @@ export class InvoicesComponent implements OnInit {
   navigationSubscription;
 
   constructor(private invoiceService: InvoicesService,
-              private router: Router) { 
+              private router: Router,
+              private titleService: Title) { 
+                this.titleService.setTitle('show invoices')
               }
 
   ngOnInit() {

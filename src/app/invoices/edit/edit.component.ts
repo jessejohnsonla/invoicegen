@@ -4,6 +4,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import {IGenericObject} from 'json-typescript-mapper';
 import { Subscription } from 'rxjs';
 import { InvoicesService } from '../invoices.service';
+import { Title }     from '@angular/platform-browser';
 
 @Component({
   selector: 'app-edit',
@@ -23,7 +24,9 @@ export class EditComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   constructor(private route: ActivatedRoute,
-              private invoicesservice: InvoicesService) { 
+              private invoicesservice: InvoicesService,
+              private titleService: Title) { 
+                this.titleService.setTitle('edit invoice')
   }
 
   ngOnDestroy(): void {

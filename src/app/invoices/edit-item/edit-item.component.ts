@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { InvoicesService } from '../invoices.service';
+import { Title }     from '@angular/platform-browser';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -21,7 +23,10 @@ export class EditItemComponent implements OnInit, OnDestroy {
   titlefragment: string = '';
 
   constructor(private route: ActivatedRoute,
-              private invoicesservice: InvoicesService) { 
+              private invoicesservice: InvoicesService,
+              private titleService: Title
+              ) { 
+                this.titleService.setTitle('edit item')
   }
 
   ngOnDestroy(): void {

@@ -20,6 +20,5 @@
   },
   "files": [ 
     "src/main.ts",
-    "src/polyfills.ts",
-    "node_modules/json-typescript-mapper/libs/utils.ts"]
+    "src/polyfills.ts"]
 }
