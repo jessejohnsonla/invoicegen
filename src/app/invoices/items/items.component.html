@@ -1,7 +1,13 @@
 <table style="padding: 0px; margin:0px;" class="table table-striped table-bordered table-hover small">
   <thead>
     <tr>
-      <th colspan="6" class="info">Line Items for &rarr; {{invoice?.BillToName}} &rarr; {{invoice?.ServiceDate}}</th>
+      <th colspan="6" class="info">Line Items for &rarr; {{invoice?.BillToName}} &rarr; {{invoice?.ServiceDate}}
+        <button #addbutton (click)="onNewItemClick($event)" 
+          id="addbutton"
+          name="addbutton"
+          type="button" 
+          class="btn btn-info btn-xs pull-right glyphicon glyphicon-plus"></button>
+      </th>
     </tr>
     <tr>
       <th>Description:</th>

@@ -3,13 +3,19 @@
     <div class="container-fluid">
       <div class="navbar-header">
         <span class="navbar-brand">{{ mode }} Invoice</span>
-        <button #savebutton (click)="onSaveClick($event)" 
+        <button #newutton (click)="onNewItemClick($event)" 
+        id="addbutton"
+        name="addbutton"
+        type="button" 
+        [disabled]="this.isnew" 
+        class="btn btn-info btn-xs navbar-btn">View Items</button>
+<button #savebutton (click)="onSaveClick($event)" 
                 id="savebutton"
                 name="savebutton"
                 type="button" 
                 [disabled]="!this.isdirty" 
-                class="btn btn-primary btn-xs navbar-btn pull-right">SAVE</button>
-      </div>
+              class="btn btn-primary btn-xs navbar-btn pull-right">SAVE</button>
+       </div>
     </div>
   </nav>  
     

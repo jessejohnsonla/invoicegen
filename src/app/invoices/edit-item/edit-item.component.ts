@@ -4,8 +4,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { Subscription, Observable } from 'rxjs';
 import { InvoicesService } from '../invoices.service';
 import { Title }     from '@angular/platform-browser';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-edit-item',
@@ -14,19 +13,21 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 })
 export class EditItemComponent implements OnInit, OnDestroy {
 
-  id:number;
-  isdirty:boolean = false;
-  invoiceitem:InvoiceItem = new InvoiceItem();
-  @ViewChild('edititemform') edititemform;
-  @ViewChild('savebutton') savebutton : ElementRef;
+  id: number = 0;
+  invoiceid: number = 0;
+  isdirty: boolean = false;
+  invoiceitem: InvoiceItem = new InvoiceItem();
   subscriptions: Subscription[] = [];
   titlefragment: string = '';
 
+  @ViewChild('edititemform') edititemform;
+  @ViewChild('savebutton') savebutton: ElementRef; 
+
   constructor(private route: ActivatedRoute,
               private invoicesservice: InvoicesService,
-              private titleService: Title
-              ) { 
-                this.titleService.setTitle('edit item')
+              private titleService: Title,
+              public bsModalRef: BsModalRef) { 
+                this.titleService.setTitle('edit item');
   }
 
   ngOnDestroy(): void {
@@ -36,26 +37,50 @@ export class EditItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.id = this.route.snapshot.params['id'];
-    this.titlefragment = (this.id > 0) ? 'Add Item to' : 'Edit Item from';
-    this.invoiceitem.InvoiceID = this.id;
-    var subscription = this.route.params.subscribe((params) => { this.id = params['id']});
+    var idparam = this.route.snapshot.params['id'];
+    if(idparam != null && idparam != '')
+      this.id = idparam;
+    this.titlefragment = (this.id == 0) ? 'Add Item to' : 'Edit Item from';
+    var subscription = this.route.params.subscribe(
+      (params) => { 
+        if(this.id==null)
+          this.id = params['id']
+      }
+    );
     this.subscriptions.push(subscription);
     
+    if(this.id > 0)
+    {
+      subscription = this.invoicesservice.getInvoiceItem(this.invoiceid, this.id).subscribe(
+        result => {
+            this.invoiceitem = result;
+        }
+      )
+      this.subscriptions.push(subscription);
+    }
+    else {
+      this.invoiceitem.InvoiceID = this.invoiceid;
+    }
+
     subscription = this.edititemform.valueChanges
         .subscribe(changes => {
           this.isdirty = this.edititemform.dirty;
         });
     this.subscriptions.push(subscription);
+    
   }
 
 
   onSaveClick(elementRef)
   {
     var subscription: Subscription;
-      var result = this.invoicesservice.createInvoiceItem(this.invoiceitem);
+      var result = this.id < 1 ? 
+            this.invoicesservice.createInvoiceItem(this.invoiceitem)
+            : this.invoicesservice.updateInvoiceItem(this.invoiceitem);
       subscription = result.subscribe(item => {
         //this.invoiceitem = item;
+        if(this.invoiceitem.ID < 1)
+          this.invoiceitem.ID = item.ID;
         this.isdirty = false;
       });
       this.subscriptions.push(subscription);

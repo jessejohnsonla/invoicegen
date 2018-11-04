@@ -31,12 +31,18 @@ export class InvoicesService implements OnDestroy {
   createInvoiceItem(item: InvoiceItem) {
 
     var post = this.httpClient.post<InvoiceItem>(this.baseUrl + 'invoiceitems/' + item.InvoiceID, item);
-
-    // this.postsubscription = post.subscribe(result => {
-    //   item = result;
-    // },
-    // error => { return null; });
     return post;
+  }
+
+  updateInvoiceItem(item: InvoiceItem): any {
+    var put = this.httpClient.put<InvoiceItem>(this.baseUrl + 'invoiceitems/' + item.InvoiceID, item);
+    return put;
+  }
+
+  deleteInvoiceItem(itemid: number)
+  {
+    var del = this.httpClient.delete<string>(this.baseUrl + 'invoiceitems/' + itemid);
+    return del;
   }
 
   createInvoice(invoice: Invoice) {
@@ -62,6 +68,9 @@ export class InvoicesService implements OnDestroy {
 
   getInvoice(invoiceid: number): Observable<Invoice> {
     return this.httpClient.get<Invoice>(this.baseUrl + 'invoice/' + invoiceid);
+  }
+  getInvoiceItem(invoiceid:number, invoiceitemid: number): Observable<InvoiceItem> {
+    return this.httpClient.get<InvoiceItem>(this.baseUrl + 'invoiceitems/' + invoiceid + '/' + invoiceitemid);
   }
 
   getInvoices(): Observable<Invoice[]> {

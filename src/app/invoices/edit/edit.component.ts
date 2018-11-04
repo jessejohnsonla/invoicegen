@@ -1,3 +1,4 @@
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Invoice } from './../invoices.model';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
@@ -5,6 +6,8 @@ import {IGenericObject} from 'json-typescript-mapper';
 import { Subscription } from 'rxjs';
 import { InvoicesService } from '../invoices.service';
 import { Title }     from '@angular/platform-browser';
+import { EditItemComponent } from '../edit-item/edit-item.component';
+import { InvoiceItemsComponent } from '../items/items.component';
 
 @Component({
   selector: 'app-edit',
@@ -22,10 +25,13 @@ export class EditComponent implements OnInit, OnDestroy {
   @ViewChild('editinvoiceform') editinvoiceform;
   @ViewChild('savebutton') savebutton : ElementRef;
   subscriptions: Subscription[] = [];
+  modalRef: BsModalRef;
 
   constructor(private route: ActivatedRoute,
               private invoicesservice: InvoicesService,
-              private titleService: Title) { 
+              private titleService: Title,
+              public bsModalRef: BsModalRef,
+              private modalService: BsModalService) { 
                 this.titleService.setTitle('edit invoice')
   }
 
@@ -36,29 +42,45 @@ export class EditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.id = this.route.snapshot.params['id'];
-    var sub = this.route.params.subscribe((params) => { this.id = params['id']});
-    this.subscriptions.push(sub);
+    var idparam = this.route.snapshot.params['id'];
+    if(idparam != null && idparam != '')
+      this.id = idparam;
 
+    var subscription = this.route.params.subscribe(
+      (params) => { 
+        if(this.id==null)
+          this.id = params['id']
+      }
+    );
+    this.subscriptions.push(subscription);  
+      
     if(this.id > 0) {
       this.mode = 'Edit';
+      subscription = this.invoicesservice.getInvoice(this.id).subscribe( invoice => {
+        this.invoice = invoice;
+      })
+      this.subscriptions.push(subscription);
     }
-    var $json:IGenericObject = {"BillToName":"bill-to-name"};
     
-    this.invoicesservice.getInvoice(this.id).subscribe( invoice => {
-      this.invoice = invoice;
-    })
 
-    sub = this.editinvoiceform.valueChanges
+    subscription = this.editinvoiceform.valueChanges
         .subscribe(status => {
           this.isdirty = this.editinvoiceform.dirty;
         });
-    this.subscriptions.push(sub);
+    this.subscriptions.push(subscription);
   }
 
   onToggleAddressClick(){
       this.toggle = this.toggle == 'show' ? 'hide' : 'show';
       this.addressDisplay = this.addressDisplay == 'none' ? 'inline' : 'none';
+  }
+
+  onNewItemClick() {
+    const initialState = {
+      invoiceid: this.id    
+    };
+    this.modalRef = this.modalService.show(InvoiceItemsComponent, {initialState});
+    this.modalRef.content.closeBtnName = 'Close';
   }
 
   onSaveClick(elementRef)

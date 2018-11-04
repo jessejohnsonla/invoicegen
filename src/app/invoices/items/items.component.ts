@@ -14,12 +14,14 @@ import { EditItemComponent } from '../edit-item/edit-item.component';
   styleUrls: ['./items.component.css']
 })
 export class InvoiceItemsComponent implements OnInit, OnDestroy {
+  id: number;
   invoiceid: number;
   invoice: Invoice;
   invoiceitems: InvoiceItem[];
   navigationSubscription;
   subscriptions: Subscription[] = [];
   modalRef: BsModalRef;
+  modalsubscription: Subscription;
 
   constructor(private route: ActivatedRoute,
               private invoiceService: InvoicesService,
@@ -32,43 +34,104 @@ export class InvoiceItemsComponent implements OnInit, OnDestroy {
 
   editClick(id:number) {
     const initialState = {
-      list: [
-        '...'
-      ],
-      title: '',
-      itemid: id
+      id: id,
+      invoiceid: this.invoiceid    
     };
     this.modalRef = this.modalService.show(EditItemComponent, {initialState});
     this.modalRef.content.closeBtnName = 'Close';
   }
 
   ngOnInit() {
-    this.invoiceid = this.route.snapshot.params['invoiceid'];
+    //this.invoiceid = this.route.snapshot.params['invoiceid'];
 
-    var subscription = this.invoiceService.getInvoice(this.invoiceid ).subscribe(
-      data => { this.invoice = data }
+
+    var idparam = this.route.snapshot.params['invoiceid'];
+    if(idparam != null && idparam != '')
+      this.id = idparam;
+    var subscription = this.route.params.subscribe(
+      (params) => { 
+        if(this.id==null)
+          this.id = params['id']
+      }
     );
     this.subscriptions.push(subscription);
-    
-    var subscription = this.invoiceService.getInvoiceItems(this.invoiceid ).subscribe(
-      data => { this.invoiceitems = data }
-    );
-    this.subscriptions.push(subscription);
+
+    this.loadInvoice()
+    this.loadInvoiceItems();
+
+    this.modalsubscription = this.modalService.onHidden.subscribe(
+      (reason: string) => {
+        this.loadInvoice()
+        this.loadInvoiceItems();
+    })
+    this.subscriptions.push(this.modalsubscription);
   }
 
   ngOnDestroy(): void {
     for(let subscription of this.subscriptions){
       subscription.unsubscribe();
     }
+    if(this.loadinvoicesubscription)
+      this.loadinvoicesubscription.unsubscribe();
+    if(this.loadinvoiceitemsubscription)
+      this.loadinvoiceitemsubscription.unsubscribe();  
+    if(this.deleteinvoiceitemsubscription)
+      this.deleteinvoiceitemsubscription.unsubscribe();    
   }
 
+  loadinvoicesubscription: Subscription;
+  loadInvoice(){
+    if(this.loadinvoicesubscription)
+      this.loadinvoicesubscription.unsubscribe();
 
-  sendClick(id:number) {
-    // this.router.navigate(['invoices','preview', id],
-    // {skipLocationChange: true});
+    this.loadinvoicesubscription = this.invoiceService.getInvoice(this.invoiceid).subscribe(
+      data => { this.invoice = data; }   
+    );   
   }
 
+  loadinvoiceitemsubscription: Subscription;
+  loadInvoiceItems(){
+    if(this.loadinvoiceitemsubscription)
+      this.loadinvoiceitemsubscription.unsubscribe();
+
+    this.loadinvoiceitemsubscription = this.invoiceService.getInvoiceItems(this.invoiceid ).subscribe(
+      data => { this.invoiceitems = data; }   
+    );   
+  }
+
+  deleteinvoiceitemsubscription: Subscription;
   deleteClick(id:number) {
-    //handle delete via service
+    if(!confirm('Delete this line item?'))
+      return;
+      
+    if(this.deleteinvoiceitemsubscription)
+      this.deleteinvoiceitemsubscription.unsubscribe();
+
+    this.deleteinvoiceitemsubscription = this.invoiceService.deleteInvoiceItem(id).subscribe(
+     result => {
+        switch(result)
+        {
+          case "0":
+            alert('Delete was not successful.');
+            break;
+          case "1":
+            this.loadInvoiceItems();
+          break;
+          default:
+            alert('Too many deleted: ' + result);
+            this.loadInvoiceItems();
+          break;
+        }
+     } 
+    );
+  }
+
+
+  onNewItemClick() {
+    const initialState = {
+      invoiceid: this.invoiceid    
+    };
+    this.modalRef = this.modalService.show(EditItemComponent, {initialState});
+    this.modalRef.content.closeBtnName = 'Close';
   }
 }
