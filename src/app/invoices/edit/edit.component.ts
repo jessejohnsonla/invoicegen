@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/internal/Observable';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Invoice } from './../invoices.model';
 import { ActivatedRoute } from '@angular/router';
@@ -21,6 +22,7 @@ export class EditComponent implements OnInit, OnDestroy {
   toggle:string = 'show';
   addressDisplay:string = 'none';
   isdirty:boolean = false;
+  _isnew:boolean = true;
   invoice:Invoice = new Invoice();
   @ViewChild('editinvoiceform') editinvoiceform;
   @ViewChild('savebutton') savebutton : ElementRef;
@@ -35,39 +37,72 @@ export class EditComponent implements OnInit, OnDestroy {
                 this.titleService.setTitle('edit invoice')
   }
 
+  get isnew() : boolean {
+    return this._isnew;
+  }
+  set isnew(isnew: boolean) {
+    this._isnew = isnew;
+  }
+
   ngOnDestroy(): void {
     for(let subscription of this.subscriptions){
       subscription.unsubscribe();
     }
+    if(this.loadinvoicesubscription)
+      this.loadinvoicesubscription.unsubscribe();
   }
 
   ngOnInit() {
     var idparam = this.route.snapshot.params['id'];
     if(idparam != null && idparam != '')
+    {
       this.id = idparam;
-
-    var subscription = this.route.params.subscribe(
-      (params) => { 
-        if(this.id==null)
-          this.id = params['id']
-      }
-    );
-    this.subscriptions.push(subscription);  
-      
-    if(this.id > 0) {
-      this.mode = 'Edit';
-      subscription = this.invoicesservice.getInvoice(this.id).subscribe( invoice => {
-        this.invoice = invoice;
-      })
-      this.subscriptions.push(subscription);
-    }
     
+      var subscription = this.route.params.subscribe(
+        (params) => { 
+          this.id = params['id'];
+          if(this.id > 0) {
+            this.mode = 'Edit';
+            this.isnew = false;
+            this.loadInvoice();
+          }
+          else{
+            this.mode = 'Create';
+            this.invoice = new Invoice();
+            this.isnew = true;
+          }
+        }
+      );
+      this.subscriptions.push(subscription);  
+    }
+    else{
+      if(this.id > 0) {
+        this.mode = 'Edit';
+        this.isnew = false;
+        this.loadInvoice();
+      }
+      else{
+        this.mode = 'Create';
+        this.invoice = new Invoice();
+        this.isnew = true;
+      }
+    }
+      
 
     subscription = this.editinvoiceform.valueChanges
-        .subscribe(status => {
-          this.isdirty = this.editinvoiceform.dirty;
-        });
-    this.subscriptions.push(subscription);
+      .subscribe(status => {
+        this.isdirty = this.editinvoiceform.dirty;
+      });
+      this.subscriptions.push(subscription);
+    }
+
+  loadinvoicesubscription: Subscription;
+  loadInvoice() {
+    this.loadinvoicesubscription = this.invoicesservice.getInvoice(this.id).subscribe( invoice => {
+      this.invoice = invoice;
+      this.id = invoice.ID;
+    });
+    this.subscriptions.push(this.loadinvoicesubscription);
   }
 
   onToggleAddressClick(){
@@ -77,40 +112,49 @@ export class EditComponent implements OnInit, OnDestroy {
 
   onNewItemClick() {
     const initialState = {
-      invoiceid: this.id    
+      invoiceid: this.invoice.ID  
     };
     this.modalRef = this.modalService.show(InvoiceItemsComponent, {initialState});
     this.modalRef.content.closeBtnName = 'Close';
   }
 
+  saveinvoicesubscription: Subscription;
   onSaveClick(elementRef)
   {
-    var subscription:Subscription;
-    var result:any;
-    if(this.mode === 'Edit') {
-      result = this.invoicesservice.updateInvoice(this.invoice);
-      if(!result)
-      {
-        console.log('not updated:');
-        return;
-      }
-      subscription = result.subscribe(invoice => {
-        this.isdirty = false;
+    if(this.invoice.ID > 0) {
+      var result = this.invoicesservice.updateInvoice(this.invoice);
+      this.saveinvoicesubscription = result.subscribe(invoice => {
+        if(!invoice)
+          alert('save was not successful');
+        else {
+          this.isdirty = false;
+          this.isnew = false;
+        }
       });
-      this.subscriptions.push(subscription);
+      this.subscriptions.push(this.saveinvoicesubscription);
     }
     else {
-      result = this.invoicesservice.createInvoice(this.invoice);
-      if(!result)
-      {
-        console.log('not created:');
-        return;
-      }
-      subscription = result.subscribe(invoice => {
-        this.isdirty = false;
-        this.invoice = invoice;
+      var cresult = this.invoicesservice.createInvoice(this.invoice);
+      this.saveinvoicesubscription = cresult.subscribe(invoice => {
+        if(invoice == null)
+          alert('create was not successful');
+        else {
+          this.invoice = invoice;
+          this.id = invoice.ID;
+          this.isdirty = false;
+          this.isnew = false;
+
+          if(this.invoice.ID > 0) {
+            this.mode = 'Edit';
+            this.isnew = false;
+          }
+          else{
+            this.mode = 'Create';
+            this.isnew = true;
+          }
+        }
       });
-      this.subscriptions.push(subscription);
+      this.subscriptions.push(this.saveinvoicesubscription);
     }
   }
 

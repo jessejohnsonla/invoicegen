@@ -79,7 +79,30 @@ export class InvoicesComponent implements OnInit, OnDestroy {
     this.modalRef.content.closeBtnName = 'Close';
   }
 
+  deleteinvoicesubscription: Subscription;
   deleteClick(id:number) {
-    //handle delete via service
+    if(!confirm('Delete this invoice?'))
+      return;
+      
+    if(this.deleteinvoicesubscription)
+      this.deleteinvoicesubscription.unsubscribe();
+
+    this.deleteinvoicesubscription = this.invoiceService.deleteInvoice(id).subscribe(
+     result => {
+      switch(result)
+      {
+        case "0":
+          alert('Delete was not successful.');
+          break;
+        case "1":
+          this.loadInvoices();
+        break;
+        default:
+          alert('Too many deleted: ' + result);
+          this.loadInvoices();
+        break;
+      }
+     } 
+    );
   }
 }

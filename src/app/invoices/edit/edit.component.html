@@ -3,9 +3,9 @@
     <div class="container-fluid">
       <div class="navbar-header">
         <span class="navbar-brand">{{ mode }} Invoice</span>
-        <button #newutton (click)="onNewItemClick($event)" 
-        id="addbutton"
-        name="addbutton"
+        <button #newbutton (click)="onNewItemClick($event)" 
+        id="newbutton"
+        name="newbutton"
         type="button" 
         [disabled]="this.isnew" 
         class="btn btn-info btn-xs navbar-btn">View Items</button>
@@ -92,7 +92,7 @@
                 <label class="sr-only" for="BillToZipcode">Zipcode:</label>
                 <div class="input-group input-group-sm">
                   <div class="input-group-addon">Zipcode:</div>
-                  <input type="zipcode" class="form-control" 
+                  <input type="text" class="form-control" 
                   id="BillToZipcode" 
                   name="BillToZipcode"
                   [(ngModel)]="this.invoice.BillToZipcode" 

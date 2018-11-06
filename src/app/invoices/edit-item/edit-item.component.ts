@@ -12,7 +12,6 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   styleUrls: ['./edit-item.component.css']
 })
 export class EditItemComponent implements OnInit, OnDestroy {
-
   id: number = 0;
   invoiceid: number = 0;
   isdirty: boolean = false;
@@ -40,11 +39,11 @@ export class EditItemComponent implements OnInit, OnDestroy {
     var idparam = this.route.snapshot.params['id'];
     if(idparam != null && idparam != '')
       this.id = idparam;
-    this.titlefragment = (this.id == 0) ? 'Add Item to' : 'Edit Item from';
+    this.titlefragment = (this.id < 1) ? 'Add Item to' : 'Edit Item from';
     var subscription = this.route.params.subscribe(
       (params) => { 
-        if(this.id==null)
-          this.id = params['id']
+        if(this.invoiceitem.ID==null)
+        this.invoiceitem.ID = params['id']
       }
     );
     this.subscriptions.push(subscription);
@@ -59,6 +58,7 @@ export class EditItemComponent implements OnInit, OnDestroy {
       this.subscriptions.push(subscription);
     }
     else {
+      this.invoiceitem = new InvoiceItem();
       this.invoiceitem.InvoiceID = this.invoiceid;
     }
 
@@ -71,19 +71,35 @@ export class EditItemComponent implements OnInit, OnDestroy {
   }
 
 
+  saveinvoiceitemsubscription: Subscription;
   onSaveClick(elementRef)
   {
-    var subscription: Subscription;
-      var result = this.id < 1 ? 
-            this.invoicesservice.createInvoiceItem(this.invoiceitem)
-            : this.invoicesservice.updateInvoiceItem(this.invoiceitem);
-      subscription = result.subscribe(item => {
-        //this.invoiceitem = item;
-        if(this.invoiceitem.ID < 1)
-          this.invoiceitem.ID = item.ID;
-        this.isdirty = false;
-      });
-      this.subscriptions.push(subscription);
+    if(this.saveinvoiceitemsubscription)
+      this.saveinvoiceitemsubscription.unsubscribe();
+
+    this.invoiceitem.InvoiceID = this.invoiceid;
+    if(this.invoiceitem.ID == null || this.invoiceitem.ID < 1)
+    {
+      var result = this.invoicesservice.createInvoiceItem(this.invoiceitem);
+                this.saveinvoiceitemsubscription = result.subscribe(item => {
+                  this.invoiceitem.ID = item.ID;
+                  this.isdirty = false;
+                  this.titlefragment = (item.ID == 0) ? 'Add Item to' : 'Edit Item from';
+                });
+    }
+    else {
+      var result2 = this.invoicesservice.updateInvoiceItem(this.invoiceitem);
+      this.saveinvoiceitemsubscription = result2.subscribe(item => {
+                  if(item){
+                    this.isdirty = false;
+                  }
+                  else
+                  {
+                    alert('update did not succeed.');
+                  }
+                });
+    }
+      this.subscriptions.push(this.saveinvoiceitemsubscription);
     }
  
 }

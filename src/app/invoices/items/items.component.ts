@@ -47,11 +47,11 @@ export class InvoiceItemsComponent implements OnInit, OnDestroy {
 
     var idparam = this.route.snapshot.params['invoiceid'];
     if(idparam != null && idparam != '')
-      this.id = idparam;
+      this.invoiceid = idparam;
     var subscription = this.route.params.subscribe(
       (params) => { 
-        if(this.id==null)
-          this.id = params['id']
+        if(this.invoiceid==null)
+          this.invoiceid = params['invoiceid']
       }
     );
     this.subscriptions.push(subscription);

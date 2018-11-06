@@ -35,7 +35,7 @@ export class InvoicesService implements OnDestroy {
   }
 
   updateInvoiceItem(item: InvoiceItem): any {
-    var put = this.httpClient.put<InvoiceItem>(this.baseUrl + 'invoiceitems/' + item.InvoiceID, item);
+    var put = this.httpClient.put<number>(this.baseUrl + 'invoiceitems/' + item.InvoiceID, item);
     return put;
   }
 
@@ -45,25 +45,24 @@ export class InvoicesService implements OnDestroy {
     return del;
   }
 
+  deleteInvoice(id: number) {
+    var del = this.httpClient.delete<string>(this.baseUrl + 'invoice/' + id);
+    return del;
+  }
+
+  saveInvoice(invoice: Invoice)
+  {
+    return invoice.ID > 0 ?
+            this.updateInvoice(invoice) :
+            this.createInvoice(invoice);
+  }
+
   createInvoice(invoice: Invoice) {
-
-    var post = this.httpClient.post<Invoice>(this.baseUrl + 'invoice/', invoice);
-
-    this.postsubscription = post.subscribe(result => {
-      invoice = result;
-    },
-    error => { return null; });
-    return invoice;
+    return this.httpClient.post<Invoice>(this.baseUrl + 'invoice/', invoice);
   }
 
   updateInvoice(invoice: Invoice)  {
-    var put = this.httpClient.put<boolean>(this.baseUrl + 'invoice/', invoice, httpOptions);
-    this.putsubscription = put.subscribe(result => {
-      console.log(result + '$$');
-      return new Observable<{success: true, errormsg: null}>();
-    },
-    error => { return new Observable<{success: false, errormsg:  null}>() });
-    return put;
+    return this.httpClient.put<number>(this.baseUrl + 'invoice/', invoice, httpOptions);
   }
 
   getInvoice(invoiceid: number): Observable<Invoice> {

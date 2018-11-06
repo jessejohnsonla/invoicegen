@@ -34,5 +34,14 @@
                       (click)="deleteClick(item.ID)">
                     </button></td>
       </tr>
+      <tr>
+        <td colspan="6" class="info">
+          <button #addbutton2 (click)="onNewItemClick($event)" 
+            id="addbutton2"
+            name="addbutton2"
+            type="button" 
+            class="btn btn-info btn-xs pull-right glyphicon glyphicon-plus"></button>
+        </td>
+      </tr>
     </tbody>
 </table>
