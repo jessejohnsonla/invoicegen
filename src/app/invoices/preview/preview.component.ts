@@ -16,6 +16,11 @@ export class PreviewComponent implements OnInit {
   pdfSrc:string;
   emails:string;
   navigationSubscription;
+  zoom: number = 1.0;
+  zoom_max: number = 2.0;
+  zoom_min: number = 1.0;
+  zoom_dir: number = 1; // 1 || -1
+  zoom_step: number = 0.2;
 
   page: number = 1;
   totalPages: number;
@@ -99,4 +104,11 @@ export class PreviewComponent implements OnInit {
     });
   }
 
+  pdfClick()
+  {
+    this.zoom += (this.zoom_dir * this.zoom_step);
+    if(this.zoom >= this.zoom_max
+        || this.zoom <= this.zoom_min)
+      this.zoom_dir *= -1;
+  }
 }

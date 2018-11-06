@@ -129,6 +129,7 @@ export class EditComponent implements OnInit, OnDestroy {
         else {
           this.isdirty = false;
           this.isnew = false;
+          this.reinit(this.invoice.ID)
         }
       });
       this.subscriptions.push(this.saveinvoicesubscription);
@@ -143,6 +144,7 @@ export class EditComponent implements OnInit, OnDestroy {
           this.id = invoice.ID;
           this.isdirty = false;
           this.isnew = false;
+          this.reinit(this.id);
 
           if(this.invoice.ID > 0) {
             this.mode = 'Edit';
@@ -156,6 +158,15 @@ export class EditComponent implements OnInit, OnDestroy {
       });
       this.subscriptions.push(this.saveinvoicesubscription);
     }
+  }
+  reinit(id:number): any {
+    this.ngOnDestroy();
+    this.editinvoiceform.reset();
+
+    this.isdirty = false;
+    this._isnew = true;
+
+    this.ngOnInit();
   }
 
   onSelectChange($event){

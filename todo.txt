@@ -1,0 +1,7 @@
+- add authorization (social?)
+- replace browser alert with ngmodal
+- make pdf view zoomable/clickable
+- make sure fields display default values where needed
+- focus  on first field when form displays
+- swap order of edit and download buttons in invoice list
+- move to hosting
